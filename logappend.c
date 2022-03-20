@@ -47,6 +47,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
   // argument data
   char *batchfile = NULL;
+  opterr = 0; //Fix for Break 5. need to set opterr = 0 so getopt doesn't print
   // pick up the switches
   while ((opt = getopt(argc, argv, "T:K:E:G:ALR:B:")) != -1)
   {
