@@ -64,20 +64,25 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
     case 'T':
       // timestamp
-      for (int i = 0; i < strlen(optarg); i++)
-      {
-        if (!isdigit(optarg[i]))
+      if (R.time == -1){
+        //Partial fix for break 0. Can only do -T once.
+        for (int i = 0; i < strlen(optarg); i++)
+        {
+          if (!isdigit(optarg[i]))
+          {
+            R.good = -1;
+            break;
+          }
+        }
+        if (strlen(optarg) > 10) {
+          R.good = -1;
+        }
+        R.time = atoi(optarg);
+        if (R.time < 0 || R.time > 1073741823)
         {
           R.good = -1;
-          break;
         }
-      }
-      if (strlen(optarg) > 10) {
-        R.good = -1;
-      }
-      R.time = atoi(optarg);
-      if (R.time < 0 || R.time > 1073741823)
-      {
+      }else{
         R.good = -1;
       }
       break;
