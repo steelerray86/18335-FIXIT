@@ -175,7 +175,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
       break;
 
     default:
-      printf("invalid\n");
+      R.good = -1;
       break;
     }
   }
@@ -321,9 +321,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
           }
 
           char *person = calloc(strlen(name) + 3, 1);
-          sprintf(person, " %s %d", name, type);
-          //Fix for break 8. Added a space before name so you can have a 
-          //substring of somebody else's name as your own. GERD and ERD are ok.
+          sprintf(person, "%s %d", name, type);
 
           char *line = calloc(strlen(data) + 1, 1);
           strncpy(line, data, strlen(data));
