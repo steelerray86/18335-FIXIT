@@ -112,14 +112,19 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
     case 'E':
       // employee name
-      R.employee = optarg;
-      for (int i = 0; i < strlen(R.employee); i++)
-      {
-        if (!isalpha(R.employee[i]))
+      if (strcmp(R.employee, "-")== 0 && strcmp(R.guest, "-")==0){
+        //partial fix for break 1 can only call -E or -G once.
+        R.employee = optarg;
+        for (int i = 0; i < strlen(R.employee); i++)
         {
-          R.good = -1;
-          break;
+          if (!isalpha(R.employee[i]))
+          {
+            R.good = -1;
+            break;
+          }
         }
+      } else{
+        R.good = -1;
       }
       break;
 
