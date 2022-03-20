@@ -47,6 +47,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
   // argument data
   char *batchfile = NULL;
+  opterr = 0; //Fix for Break 5. need to set opterr = 0 so getopt doesn't print
   // pick up the switches
   while ((opt = getopt(argc, argv, "T:K:E:G:ALR:B:")) != -1)
   {
@@ -174,7 +175,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
       break;
 
     default:
-      // unknown option, leave
+      printf("invalid\n");
       break;
     }
   }
@@ -320,7 +321,9 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
           }
 
           char *person = calloc(strlen(name) + 3, 1);
-          sprintf(person, "%s %d", name, type);
+          sprintf(person, " %s %d", name, type);
+          //Fix for break 8. Added a space before name so you can have a 
+          //substring of somebody else's name as your own. GERD and ERD are ok.
 
           char *line = calloc(strlen(data) + 1, 1);
           strncpy(line, data, strlen(data));
