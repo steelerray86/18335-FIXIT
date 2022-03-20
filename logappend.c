@@ -218,6 +218,11 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
     {
       R.good = -1;
     }
+    if (strcmp(R.token, "-") == 0)
+    //Fix for 4 Check to make sure token is initialized
+    {
+      R.good = -1;
+    }
   }
   else if (R.batchCommand == 0)
   {
