@@ -78,7 +78,8 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
           R.good = -1;
         }
         R.time = atoi(optarg);
-        if (R.time < 0 || R.time > 1073741823)
+        if (R.time < 1 || R.time > 1073741823)
+        //Fix for break 3, change bounds of time check to not allow 0 as a time
         {
           R.good = -1;
         }
