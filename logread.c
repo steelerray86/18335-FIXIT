@@ -164,10 +164,8 @@ int main(int argc, char *argv[])
   }
   else
   {
-    //Fix for break 6 and partial fix for 0 and 1. If unimplemented log is
-    //passed in print two spaces and be done.
-    printf("\n\n");
-    return 0;
+    printf("invalid");
+    return 255;
   }
 
   Buffer A = read_from_path(logpath, token);
