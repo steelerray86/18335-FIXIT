@@ -47,7 +47,6 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
   // argument data
   char *batchfile = NULL;
-  opterr = 0; //Fix for Break 5. need to set opterr = 0 so getopt doesn't print
   // pick up the switches
   while ((opt = getopt(argc, argv, "T:K:E:G:ALR:B:")) != -1)
   {
@@ -65,26 +64,20 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
     case 'T':
       // timestamp
-      if (R.time == -1){
-        //Partial fix for break 0. Can only do -T once.
-        for (int i = 0; i < strlen(optarg); i++)
-        {
-          if (!isdigit(optarg[i]))
-          {
-            R.good = -1;
-            break;
-          }
-        }
-        if (strlen(optarg) > 10) {
-          R.good = -1;
-        }
-        R.time = atoi(optarg);
-        if (R.time < 1 || R.time > 1073741823)
-        //Fix for break 3, change bounds of time check to not allow 0 as a time
+      for (int i = 0; i < strlen(optarg); i++)
+      {
+        if (!isdigit(optarg[i]))
         {
           R.good = -1;
+          break;
         }
-      }else{
+      }
+      if (strlen(optarg) > 10) {
+        R.good = -1;
+      }
+      R.time = atoi(optarg);
+      if (R.time < 0 || R.time > 1073741823)
+      {
         R.good = -1;
       }
       break;
@@ -114,37 +107,27 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
 
     case 'E':
       // employee name
-      if (strcmp(R.employee, "-")== 0 && strcmp(R.guest, "-")==0){
-        //partial fix for break 1 can only call -E or -G once.
-        R.employee = optarg;
-        for (int i = 0; i < strlen(R.employee); i++)
+      R.employee = optarg;
+      for (int i = 0; i < strlen(R.employee); i++)
+      {
+        if (!isalpha(R.employee[i]))
         {
-          if (!isalpha(R.employee[i]))
-          {
-            R.good = -1;
-            break;
-          }
+          R.good = -1;
+          break;
         }
-      } else{
-        R.good = -1;
       }
       break;
 
     case 'G':
       // guest name
-      if (strcmp(R.employee, "-")== 0 && strcmp(R.guest, "-")==0){
-        //partial fix for break 2 can only call -E or -G once.
-        R.guest = optarg;
-        for (int i = 0; i < strlen(R.guest); i++)
+      R.guest = optarg;
+      for (int i = 0; i < strlen(R.guest); i++)
+      {
+        if (!isalpha(R.guest[i]))
         {
-          if (!isalpha(R.guest[i]))
-          {
-            R.good = -1;
-            break;
-          }
+          R.good = -1;
+          break;
         }
-      } else{
-        R.good = -1;
       }
       break;
 
@@ -175,7 +158,7 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
       break;
 
     default:
-      R.good = -1;
+      // unknown option, leave
       break;
     }
   }
@@ -216,11 +199,6 @@ CmdLineResult parse_cmdline(int argc, char *argv[], int is_batch)
     }
 
     if (strcmp(R.employee, "-") == strcmp(R.guest, "-"))
-    {
-      R.good = -1;
-    }
-    if (strcmp(R.token, "-") == 0)
-    //Fix for 4 Check to make sure token is initialized
     {
       R.good = -1;
     }
